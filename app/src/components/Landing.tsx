@@ -1,4 +1,4 @@
-import { useState, FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
@@ -49,49 +49,16 @@ export const Landing = () => {
 	};
 
 	return (
-		<div
-			style={{
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "center",
-				minHeight: "100vh",
-				backgroundColor: "#1a1a2e",
-				color: "white",
-				padding: "20px",
-			}}
-		>
-			<div
-				style={{
-					backgroundColor: "#16213e",
-					padding: "40px",
-					borderRadius: "10px",
-					boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
-					width: "100%",
-					maxWidth: "400px",
-				}}
-			>
-				<h1
-					style={{
-						textAlign: "center",
-						margin: "0 0 30px 0",
-						color: "#e94560",
-						fontSize: "32px",
-					}}
-				>
+		<div className="flex flex-col items-center justify-center min-h-screen bg-[#1a1a2e] text-white p-5">
+			<div className="bg-[#16213e] p-10 rounded-lg shadow-2xl w-full max-w-100">
+				<h1 className="text-center m-0 mb-8 text-blue-600 text-2xl">
 					RED TETRIS
 				</h1>
 
 				{/* Player name input */}
 				<form onSubmit={handleCreateRoom}>
-					<div style={{ marginBottom: "20px" }}>
-						<label
-							style={{
-								display: "block",
-								marginBottom: "8px",
-								fontSize: "14px",
-							}}
-						>
+					<div className="mb-5">
+						<label className="block mb-2 text-sm">
 							Ton pseudo *
 						</label>
 						<input
@@ -100,16 +67,7 @@ export const Landing = () => {
 							onChange={(e) => setPlayerName(e.target.value)}
 							placeholder="Ex: Elias"
 							required
-							style={{
-								width: "100%",
-								padding: "12px",
-								borderRadius: "5px",
-								border: "2px solid #0f3460",
-								backgroundColor: "#0f3460",
-								color: "white",
-								fontSize: "16px",
-								boxSizing: "border-box",
-							}}
+							className="w-full p-3 rounded border-2 border-[#0f3460] bg-[#0f3460] text-white text-base box-border"
 						/>
 					</div>
 
@@ -117,69 +75,23 @@ export const Landing = () => {
 					<button
 						type="submit"
 						disabled={!playerName.trim()}
-						style={{
-							width: "100%",
-							padding: "12px",
-							fontSize: "16px",
-							backgroundColor: "#e94560",
-							color: "white",
-							border: "none",
-							borderRadius: "5px",
-							cursor: playerName.trim()
-								? "pointer"
-								: "not-allowed",
-							opacity: playerName.trim() ? 1 : 0.5,
-							marginBottom: "20px",
-							fontWeight: "bold",
-						}}
+						className="w-full p-3 text-base bg-[#e94560] text-white border-0 rounded cursor-pointer font-bold disabled:cursor-not-allowed disabled:opacity-50 mb-5"
 					>
 						Créer une room
 					</button>
 				</form>
 
 				{/* Divider */}
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						margin: "20px 0",
-					}}
-				>
-					<div
-						style={{
-							flex: 1,
-							height: "1px",
-							backgroundColor: "#0f3460",
-						}}
-					></div>
-					<span
-						style={{
-							padding: "0 10px",
-							color: "#888",
-							fontSize: "14px",
-						}}
-					>
-						OU
-					</span>
-					<div
-						style={{
-							flex: 1,
-							height: "1px",
-							backgroundColor: "#0f3460",
-						}}
-					></div>
+				<div className="flex items-center my-5">
+					<div className="flex-1 h-px bg-[#0f3460]"></div>
+					<span className="px-2.5 text-[#888] text-sm">OU</span>
+					<div className="flex-1 h-px bg-[#0f3460]"></div>
 				</div>
 
 				{/* Join room form */}
 				<form onSubmit={handleJoinRoom}>
-					<div style={{ marginBottom: "20px" }}>
-						<label
-							style={{
-								display: "block",
-								marginBottom: "8px",
-								fontSize: "14px",
-							}}
-						>
+					<div className="mb-5">
+						<label className="block mb-2 text-sm">
 							Nom de la room *
 						</label>
 						<input
@@ -188,40 +100,14 @@ export const Landing = () => {
 							onChange={(e) => setJoinRoomName(e.target.value)}
 							placeholder="Ex: RedTetris123"
 							required
-							style={{
-								width: "100%",
-								padding: "12px",
-								borderRadius: "5px",
-								border: "2px solid #0f3460",
-								backgroundColor: "#0f3460",
-								color: "white",
-								fontSize: "16px",
-								boxSizing: "border-box",
-							}}
+							className="w-full p-3 rounded border-2 border-[#0f3460] bg-[#0f3460] text-white text-base box-border"
 						/>
 					</div>
 
 					<button
 						type="submit"
 						disabled={!playerName.trim() || !joinRoomName.trim()}
-						style={{
-							width: "100%",
-							padding: "12px",
-							fontSize: "16px",
-							backgroundColor: "#0f3460",
-							color: "white",
-							border: "2px solid #e94560",
-							borderRadius: "5px",
-							cursor:
-								playerName.trim() && joinRoomName.trim()
-									? "pointer"
-									: "not-allowed",
-							opacity:
-								playerName.trim() && joinRoomName.trim()
-									? 1
-									: 0.5,
-							fontWeight: "bold",
-						}}
+						className="w-full p-3 text-base bg-[#0f3460] text-white border-2 border-[#e94560] rounded font-bold disabled:cursor-not-allowed disabled:opacity-50"
 					>
 						Rejoindre
 					</button>
