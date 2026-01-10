@@ -86,6 +86,16 @@ export const sendInput = (room: string, input: { type: string }): void => {
 export const getSocket = (): Socket | null => socket;
 
 // Types
+export interface Spectrum {
+    heights: number[];
+}
+
+export interface Piece {
+    type: string;
+    position: { x: number; y: number };
+    shape: number[][];
+}
+
 export interface GameState {
     id: string;
     players: Array<{
@@ -96,8 +106,6 @@ export interface GameState {
     }>;
     host: string;
     isPlaying: boolean;
-}
-
-export interface Spectrum {
-    heights: number[];
+    board?: number[][];
+    currentPiece?: Piece | null;
 }
