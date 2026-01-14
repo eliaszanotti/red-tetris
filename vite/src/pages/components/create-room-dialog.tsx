@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { generateRoomName } from "@/lib/generate-room-name";
 import {
 	Dialog,
 	DialogClose,
@@ -18,8 +19,25 @@ import {
 	FieldLabel,
 	FieldSet,
 } from "@/components/ui/field";
+import { createRoomSchema } from "@/schemas/create-room-schema";
+import { useForm } from "@tanstack/react-form";
 
 export function CreateRoomDialog() {
+	const generatedRoomName = generateRoomName();
+
+	const form = useForm({
+		defaultValues: {
+			roomName: generatedRoomName,
+			playerName: "",
+		},
+		onSubmit: async ({ value }) => {
+			window.location.href = `/${value.roomName}/${value.playerName}`;
+		},
+		validators: {
+			onChange: createRoomSchema,
+		},
+	});
+
 	return (
 		<Dialog>
 			<DialogTrigger
@@ -29,30 +47,88 @@ export function CreateRoomDialog() {
 				<DialogHeader>
 					<DialogTitle>Create a new room</DialogTitle>
 					<DialogDescription>
-						Enter a room name to create your own Tetris room.
+						Enter your player name to create your own Tetris room.
 					</DialogDescription>
 				</DialogHeader>
 				<FieldSet>
 					<FieldGroup>
-						<Field>
-							<FieldLabel>Room Name</FieldLabel>
-							<FieldContent>
-								<Input
-									type="text"
-									name="roomName"
-									placeholder="Enter room name"
-									className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-								/>
-							</FieldContent>
-							<FieldError />
-						</Field>
+						<form.Field
+							name="roomName"
+							children={(field) => (
+								<Field data-invalid={!field.state.meta.isValid}>
+									<FieldLabel>Room Name</FieldLabel>
+									<FieldContent>
+										<Input
+											aria-invalid={
+												!field.state.meta.isValid
+											}
+											type="text"
+											name={field.name}
+											value={field.state.value}
+											onChange={(e) =>
+												field.handleChange(
+													e.target.value
+												)
+											}
+										/>
+									</FieldContent>
+									<FieldError
+										errors={field.state.meta.errors}
+									/>
+								</Field>
+							)}
+						/>
+						<form.Field
+							name="playerName"
+							children={(field) => (
+								<Field data-invalid={!field.state.meta.isValid}>
+									<FieldLabel>Player Name</FieldLabel>
+									<FieldContent>
+										<Input
+											aria-invalid={
+												!field.state.meta.isValid
+											}
+											type="text"
+											name={field.name}
+											value={field.state.value}
+											onChange={(e) =>
+												field.handleChange(
+													e.target.value
+												)
+											}
+											placeholder="Enter player name"
+										/>
+									</FieldContent>
+									<FieldError
+										errors={field.state.meta.errors}
+									/>
+								</Field>
+							)}
+						/>
 					</FieldGroup>
 				</FieldSet>
 				<DialogFooter>
 					<DialogClose
 						render={<Button variant="outline">Cancel</Button>}
 					/>
-					<Button type="submit">Create</Button>
+					<form.Subscribe
+						selector={(state) => [
+							state.isDirty,
+							state.canSubmit,
+							state.isSubmitting,
+						]}
+						children={([isDirty, canSubmit, isSubmitting]) => (
+							<Button
+								type="submit"
+								onClick={form.handleSubmit}
+								disabled={
+									!isDirty || !canSubmit || isSubmitting
+								}
+							>
+								{isSubmitting ? "Creating..." : "Create"}
+							</Button>
+						)}
+					/>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
