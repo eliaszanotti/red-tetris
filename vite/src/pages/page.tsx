@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -78,6 +79,9 @@ function CreateRoomDialog() {
 					</FieldGroup>
 				</FieldSet>
 				<DialogFooter>
+					<DialogClose asChild>
+						<Button variant="outline">Cancel</Button>
+					</DialogClose>
 					<Button type="submit">Create</Button>
 				</DialogFooter>
 			</DialogContent>
@@ -116,6 +120,9 @@ function JoinRoomDialog() {
 					</FieldGroup>
 				</FieldSet>
 				<DialogFooter>
+					<DialogClose asChild>
+						<Button variant="outline">Cancel</Button>
+					</DialogClose>
 					<Button type="submit">Join</Button>
 				</DialogFooter>
 			</DialogContent>
