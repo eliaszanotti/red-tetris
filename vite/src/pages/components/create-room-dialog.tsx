@@ -133,7 +133,6 @@ export function CreateRoomDialog() {
 						]}
 						children={([isDirty, canSubmit, isSubmitting]) => (
 							<Button
-								type="submit"
 								onClick={form.handleSubmit}
 								disabled={
 									!isDirty || !canSubmit || isSubmitting
