@@ -21,13 +21,8 @@ import {
 } from "@/components/ui/field";
 import { createRoomSchema } from "@/schemas/create-room-schema";
 import { useForm } from "@tanstack/react-form";
-import {
-	InputGroup,
-	InputGroupAddon,
-	InputGroupButton,
-	InputGroupInput,
-} from "@/components/ui/input-group";
 import { Dice3 } from "lucide-react";
+import { ButtonGroup } from "@/components/ui/button-group";
 
 export function CreateRoomDialog() {
 	const generatedRoomName = generateRoomName();
@@ -65,8 +60,8 @@ export function CreateRoomDialog() {
 								<Field data-invalid={!field.state.meta.isValid}>
 									<FieldLabel>Room Name</FieldLabel>
 									<FieldContent>
-										<InputGroup>
-											<InputGroupInput
+										<ButtonGroup className="w-full">
+											<Input
 												aria-invalid={
 													!field.state.meta.isValid
 												}
@@ -79,20 +74,17 @@ export function CreateRoomDialog() {
 													)
 												}
 											/>
-											<InputGroupAddon align="inline-end">
-												<InputGroupButton
-													onClick={() => {
-														const newName =
-															generateRoomName();
-														field.handleChange(
-															newName
-														);
-													}}
-												>
-													<Dice3 />
-												</InputGroupButton>
-											</InputGroupAddon>
-										</InputGroup>
+											<Button
+												variant="outline"
+												onClick={() => {
+													const newName =
+														generateRoomName();
+													field.handleChange(newName);
+												}}
+											>
+												<Dice3 />
+											</Button>
+										</ButtonGroup>
 									</FieldContent>
 									<FieldError
 										errors={field.state.meta.errors}
