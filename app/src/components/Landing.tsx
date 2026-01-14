@@ -1,37 +1,11 @@
 import { useState, type FormEvent } from "react";
 import { useNavigate } from "react-router-dom";
+import { generateRoomName } from "@/lib/generate-room-name";
 
 export const Landing = () => {
 	const navigate = useNavigate();
 	const [playerName, setPlayerName] = useState("");
 	const [joinRoomName, setJoinRoomName] = useState("");
-
-	const generateRoomName = (): string => {
-		const adjectives = [
-			"Red",
-			"Blue",
-			"Green",
-			"Golden",
-			"Dark",
-			"Cosmic",
-			"Neon",
-			"Pixel",
-		];
-		const nouns = [
-			"Tetris",
-			"Pelicans",
-			"Blocks",
-			"Racers",
-			"Warriors",
-			"Legends",
-			"Masters",
-			"Heroes",
-		];
-		const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-		const noun = nouns[Math.floor(Math.random() * nouns.length)];
-		const number = Math.floor(Math.random() * 1000);
-		return `${adj}${noun}${number}`;
-	};
 
 	const handleCreateRoom = (e: FormEvent) => {
 		e.preventDefault();
