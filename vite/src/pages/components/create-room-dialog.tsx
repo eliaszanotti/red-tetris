@@ -19,7 +19,7 @@ import {
 	FieldLabel,
 	FieldSet,
 } from "@/components/ui/field";
-import { createRoomSchema } from "@/schemas/create-room-schema";
+import { createRoomSchema } from "@/schemas/room-schema";
 import { useForm } from "@tanstack/react-form";
 import { Dice3 } from "lucide-react";
 import { ButtonGroup } from "@/components/ui/button-group";
