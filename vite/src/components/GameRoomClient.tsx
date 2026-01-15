@@ -1,4 +1,4 @@
-import { useParams } from 'react';
+import { useParams } from 'react-router-dom';
 import { useGameSocket } from '../hooks/useGameSocket';
 import { GameBoard } from './GameBoard';
 import { OpponentsPanel } from './OpponentsPanel';

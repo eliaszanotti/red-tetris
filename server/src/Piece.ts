@@ -59,6 +59,10 @@ export class Piece {
         this.y++;
     }
 
+    moveUp(): void {
+        this.y--;
+    }
+
     rotate(): void {
         // Rotate clockwise
         const rows = this.shape.length;
