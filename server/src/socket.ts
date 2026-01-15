@@ -1,6 +1,9 @@
 import type { Server, Socket } from 'socket.io';
 import type { ServerStateClass } from './types/state.js';
 import { handleJoinGame } from './handlers/join-game.js';
+import { handleStartGame } from './handlers/start-game.js';
+import { handlePlayerInput } from './handlers/player-input.js';
+import { handleDisconnect } from './handlers/disconnect.js';
 
 type PlayerClass = new (id: string, name: string, socket: Socket) => any;
 
@@ -17,21 +20,18 @@ export function setupSocketIO(
 		});
 
 		socket.on('start_game', (params: { room: string }) => {
-			// TODO: create start-game handler
-			console.log('[start_game] Received:', params);
+			handleStartGame(socket, state, params);
 		});
 
 		socket.on(
 			'player_input',
 			(params: { room: string; input: { type: string } }) => {
-				// TODO: create player-input handler
-				console.log('[player_input] Received:', params);
+				handlePlayerInput(socket, state, params);
 			},
 		);
 
 		socket.on('disconnect', () => {
-			console.log('[disconnect] Client disconnected:', socket.id);
-			// TODO: create disconnect handler
+			handleDisconnect(socket, state);
 		});
 	});
 }
