@@ -1,6 +1,6 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { io, Socket } from 'socket.io-client';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 
 type Player = {
 	id: string;
@@ -19,7 +19,10 @@ type RoomState = {
 };
 
 export const GameRoomClient = () => {
-	const { room, playerName } = useParams<{ room: string; playerName: string }>();
+	const { room, playerName } = useParams<{
+		room: string;
+		playerName: string;
+	}>();
 
 	const [isConnected, setIsConnected] = useState(false);
 	const [roomState, setRoomState] = useState<RoomState | null>(null);
@@ -27,22 +30,20 @@ export const GameRoomClient = () => {
 	useEffect(() => {
 		if (!room || !playerName) return;
 
-		const socket: Socket = io('http://localhost:3000');
+		const socket: Socket = io("http://localhost:3000");
 
-		socket.on('connect', () => {
+		socket.on("connect", () => {
 			setIsConnected(true);
-			socket.emit('join_game', { room, playerName });
+			socket.emit("join_game", { room, playerName });
 		});
 
-		socket.on('game_state', (state: RoomState) => {
+		socket.on("game_state", (state: RoomState) => {
 			setRoomState(state);
 		});
 
-		socket.on('player_joined', (player: Player) => {
+		socket.on("player_joined", (player: Player) => {
 			setRoomState((prev) =>
-				prev
-					? { ...prev, players: [...prev.players, player] }
-					: null,
+				prev ? { ...prev, players: [...prev.players, player] } : null,
 			);
 		});
 
@@ -54,7 +55,9 @@ export const GameRoomClient = () => {
 	if (!room || !playerName) {
 		return (
 			<div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-				<p className="text-red-400">Invalid URL. Use: /:room/:playerName</p>
+				<p className="text-red-400">
+					Invalid URL. Use: /:room/:playerName
+				</p>
 			</div>
 		);
 	}
@@ -64,14 +67,16 @@ export const GameRoomClient = () => {
 			<div className="flex items-center justify-center min-h-screen bg-gray-900">
 				<div className="flex flex-col items-center gap-4">
 					<div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
-					<p className="text-white text-lg">Connecting to server...</p>
+					<p className="text-white text-lg">
+						Connecting to server...
+					</p>
 				</div>
 			</div>
 		);
 	}
 
 	return (
-		<div className="flex min-h-screen bg-gray-900 text-white">
+		<div>
 			{/* Main area */}
 			<div className="flex-1 flex items-center justify-center">
 				<div className="text-center">
@@ -79,9 +84,13 @@ export const GameRoomClient = () => {
 					<p className="text-gray-400 mb-2">Room: {room}</p>
 					<p className="text-gray-400">Player: {playerName}</p>
 					{roomState?.isPlaying ? (
-						<p className="text-green-400 mt-4">Game in progress...</p>
+						<p className="text-green-400 mt-4">
+							Game in progress...
+						</p>
 					) : (
-						<p className="text-yellow-400 mt-4">Waiting for host to start...</p>
+						<p className="text-yellow-400 mt-4">
+							Waiting for host to start...
+						</p>
 					)}
 				</div>
 			</div>
@@ -98,12 +107,14 @@ export const GameRoomClient = () => {
 								key={player.id}
 								className={`p-3 rounded-lg ${
 									player.name === playerName
-										? 'bg-red-600'
-										: 'bg-gray-700'
+										? "bg-red-600"
+										: "bg-gray-700"
 								} flex items-center gap-3`}
 							>
 								<div className="w-3 h-3 rounded-full bg-green-400" />
-								<span className="font-medium">{player.name}</span>
+								<span className="font-medium">
+									{player.name}
+								</span>
 								{player.id === roomState?.host && (
 									<span className="text-xs bg-yellow-500 text-black px-2 py-0.5 rounded">
 										HOST
