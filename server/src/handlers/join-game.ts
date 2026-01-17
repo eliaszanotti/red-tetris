@@ -24,21 +24,38 @@ export const handleJoinGame = (
 	// Créer la room
 	const roomState = getOrCreateRoom(state, room);
 
-	// Premier joueur = host
-	if (roomState.host === "") {
-		roomState.host = socket.id;
-	}
+	// Vérifier si le joueur existe déjà (même nom)
+	const existingPlayer = Array.from(roomState.players.values()).find(
+		(p) => p.name === playerName
+	);
 
-	// Ajouter le joueur au state
-	roomState.players.set(socket.id, {
-		id: socket.id,
-		name: playerName,
-		socket,
-		board: Array(20).fill(null).map(() => Array(10).fill(0)),
-		currentPiece: null,
-		isAlive: true,
-		spectrum: { heights: Array(10).fill(0) },
-	});
+	if (existingPlayer) {
+		// Mettre à jour le socket du joueur existant
+		existingPlayer.socket = socket;
+		// Supprimer l'ancienne entrée avec l'ancien socket.id
+		roomState.players.delete(existingPlayer.id);
+		// Mettre à jour l'id avec le nouveau socket.id
+		existingPlayer.id = socket.id;
+		// Réinsérer avec le nouvel id
+		roomState.players.set(socket.id, existingPlayer);
+		console.log("[join-game] Player reconnected:", playerName);
+	} else {
+		// Premier joueur = host
+		if (roomState.host === "") {
+			roomState.host = socket.id;
+		}
+
+		// Ajouter le nouveau joueur au state
+		roomState.players.set(socket.id, {
+			id: socket.id,
+			name: playerName,
+			socket,
+			board: Array(20).fill(null).map(() => Array(10).fill(0)),
+			currentPiece: null,
+			isAlive: true,
+			spectrum: { heights: Array(10).fill(0) },
+		});
+	}
 
 	// Rejoindre la room socket
 	socket.join(room);
