@@ -1,5 +1,5 @@
 import type { Socket } from "socket.io";
-import type { ServerState } from "@shared/state";
+import type { ServerState } from "red-tetris-types/state";
 
 export const handleDisconnect = (
 	socket: Socket,

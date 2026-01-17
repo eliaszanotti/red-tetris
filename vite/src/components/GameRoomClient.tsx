@@ -1,25 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import type { Player, RoomState } from "red-tetris-types/state";
 import { PlayerList } from "./PlayerList";
 import { InvalidUrl } from "./InvalidUrl";
 import { Connecting } from "./Connecting";
-
-type Player = {
-	id: string;
-	name: string;
-	board: number[][];
-	currentPiece: unknown;
-	isAlive: boolean;
-	spectrum: { heights: number[] };
-};
-
-type RoomState = {
-	id: string;
-	host: string;
-	isPlaying: boolean;
-	players: Player[];
-};
 
 export const GameRoomClient = () => {
 	const { room, playerName } = useParams<{

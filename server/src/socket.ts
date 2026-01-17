@@ -1,5 +1,5 @@
 import type { Server, Socket } from "socket.io";
-import type { ServerState } from "@shared/state";
+import type { ServerState } from "red-tetris-types/state";
 import { handleJoinGame } from "@/handlers/join-game";
 import { handleStartGame } from "@/handlers/start-game";
 import { handlePlayerInput } from "@/handlers/player-input";

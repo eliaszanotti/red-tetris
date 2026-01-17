@@ -4,13 +4,5 @@
 		{ "path": "./server" },
 		{ "path": "./vite" },
 		{ "path": "./types" }
-	],
-	"compilerOptions": {
-		"baseUrl": ".",
-		"paths": {
-			"@shared/*": ["./types/*"],
-			"@server/*": ["./server/src/*"],
-			"@vite/*": ["./vite/src/*"]
-		}
-	}
+	]
 }

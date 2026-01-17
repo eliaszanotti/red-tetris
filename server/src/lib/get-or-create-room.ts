@@ -1,4 +1,4 @@
-import type { Room, ServerState } from "@shared/state";
+import type { Room, ServerState } from "red-tetris-types/state";
 
 export function getOrCreateRoom(
 	state: ServerState,
