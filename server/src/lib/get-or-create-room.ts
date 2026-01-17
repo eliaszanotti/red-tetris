@@ -4,14 +4,17 @@ export function getOrCreateRoom(
 	state: ServerState,
 	roomId: string,
 ): Room {
-	if (!state.has(roomId)) {
-		state.set(roomId, {
+	const existingRoom = state.find((r) => r.id === roomId);
+	if (!existingRoom) {
+		const newRoom: Room = {
 			id: roomId,
 			host: "",
 			isPlaying: false,
-			players: new Map(),
+			players: [],
 			createdAt: new Date(),
-		});
+		};
+		state.push(newRoom);
+		return newRoom;
 	}
-	return state.get(roomId)!;
+	return existingRoom;
 }

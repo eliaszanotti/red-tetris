@@ -6,10 +6,9 @@ import { handlePlayerInput } from "@/handlers/player-input";
 import { handleDisconnect } from "@/handlers/disconnect";
 
 export function setupSocketIO(io: Server): void {
-	const state: ServerState = new Map();
+	const state: ServerState = [];
 	io.on("connection", (socket: Socket) => {
 		console.log("state", state);
-		// console.log("[connection] Client connected:", socket.id);
 
 		socket.on(
 			"join_game",

@@ -15,8 +15,8 @@ export interface Room {
 	id: string;
 	host: string;
 	isPlaying: boolean;
-	players: Map<string, Player>;
+	players: Player[];
 	createdAt: Date;
 }
 
-export type ServerState = Map<string, Room>;
+export type ServerState = Room[];
