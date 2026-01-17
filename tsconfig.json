@@ -1,0 +1,17 @@
+{
+	"files": [],
+	"references": [
+		{ "path": "./server" },
+		{ "path": "./vite" },
+		{ "path": "./types" }
+	],
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./*"],
+			"@server/*": ["./server/*"],
+			"@types/*": ["./types/*"],
+			"@vite/*": ["./vite/*"]
+		}
+	}
+}
