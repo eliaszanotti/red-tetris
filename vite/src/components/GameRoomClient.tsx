@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import type { Player, RoomState } from "red-tetris-types/state";
+import type { Player, Room } from "red-tetris-types/state";
 import { PlayerList } from "./PlayerList";
 import { InvalidUrl } from "./InvalidUrl";
 import { Connecting } from "./Connecting";
@@ -13,7 +13,7 @@ export const GameRoomClient = () => {
 	}>();
 
 	const [isConnected, setIsConnected] = useState(false);
-	const [roomState, setRoomState] = useState<RoomState | null>(null);
+	const [roomState, setRoomState] = useState<Room | null>(null);
 
 	useEffect(() => {
 		if (!room || !playerName) return;
@@ -25,7 +25,7 @@ export const GameRoomClient = () => {
 			socket.emit("join_game", { room, playerName });
 		});
 
-		socket.on("game_state", (state: RoomState) => {
+		socket.on("game_state", (state: Room) => {
 			setRoomState(state);
 		});
 

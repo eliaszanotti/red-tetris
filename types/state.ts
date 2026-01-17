@@ -1,7 +1,7 @@
 import type { Socket } from "socket.io";
 import { Piece } from "./piece";
 
-export interface PlayerInRoom {
+export interface Player {
 	id: string;
 	name: string;
 	socket: Socket;
@@ -15,7 +15,7 @@ export interface Room {
 	id: string;
 	host: string;
 	isPlaying: boolean;
-	players: Map<string, PlayerInRoom>;
+	players: Map<string, Player>;
 	createdAt: Date;
 }
 
