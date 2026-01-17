@@ -1,11 +1,7 @@
-import type { Room } from "../../../types/state.js";
-
-export function createServerState(): Map<string, Room> {
-	return new Map();
-}
+import type { Room, ServerState } from "red-tetris-types/state";
 
 export function getOrCreateRoom(
-	state: Map<string, Room>,
+	state: ServerState,
 	roomId: string,
 ): Room {
 	if (!state.has(roomId)) {

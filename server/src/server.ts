@@ -3,7 +3,6 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import { ServerStateClass } from "./types/state.js";
 import { setupSocketIO } from "./socket.js";
 
 const __filename = fileURLToPath(import.meta.url);
