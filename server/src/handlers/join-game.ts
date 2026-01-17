@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io";
-import { getOrCreateRoom } from "@/server/lib/get-or-create-room";
-import type { ServerState } from "@/types/state";
+import { getOrCreateRoom } from "@/lib/get-or-create-room";
+import type { ServerState } from "@shared/state";
 
 interface JoinGameParams {
 	room: string;

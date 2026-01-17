@@ -1,4 +1,4 @@
-import type { Room, ServerState } from "@/types/state";
+import type { Room, ServerState } from "@shared/state";
 
 export function getOrCreateRoom(
 	state: ServerState,

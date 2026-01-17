@@ -1,9 +1,9 @@
 import type { Server, Socket } from "socket.io";
-import type { ServerState } from "@/types/state";
-import { handleJoinGame } from "@/server/handlers/join-game";
-import { handleStartGame } from "@/server/handlers/start-game";
-import { handlePlayerInput } from "@/server/handlers/player-input";
-import { handleDisconnect } from "@/server/handlers/disconnect";
+import type { ServerState } from "@shared/state";
+import { handleJoinGame } from "@/handlers/join-game";
+import { handleStartGame } from "@/handlers/start-game";
+import { handlePlayerInput } from "@/handlers/player-input";
+import { handleDisconnect } from "@/handlers/disconnect";
 
 export function setupSocketIO(io: Server): void {
 	const state: ServerState = new Map();

@@ -13,7 +13,8 @@
 		"declaration": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@shared/*": ["../types/*"]
 		}
 	},
 	"include": ["src/**/*"],

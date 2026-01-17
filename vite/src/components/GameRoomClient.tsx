@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
+import { PlayerList } from "./PlayerList";
 
 type Player = {
 	id: string;
@@ -98,31 +99,12 @@ export const GameRoomClient = () => {
 			{/* Players sidebar */}
 			<div className="w-64 bg-gray-800 border-l border-gray-700 p-4">
 				<h2 className="text-xl font-semibold mb-4">Players</h2>
-				{roomState?.players.length === 0 ? (
-					<p className="text-gray-500">No players yet...</p>
-				) : (
-					<ul className="space-y-2">
-						{roomState?.players.map((player) => (
-							<li
-								key={player.id}
-								className={`p-3 rounded-lg ${
-									player.name === playerName
-										? "bg-red-600"
-										: "bg-gray-700"
-								} flex items-center gap-3`}
-							>
-								<div className="w-3 h-3 rounded-full bg-green-400" />
-								<span className="font-medium">
-									{player.name}
-								</span>
-								{player.id === roomState?.host && (
-									<span className="text-xs bg-yellow-500 text-black px-2 py-0.5 rounded">
-										HOST
-									</span>
-								)}
-							</li>
-						))}
-					</ul>
+				{roomState && (
+					<PlayerList
+						players={roomState.players}
+						currentPlayerName={playerName}
+						hostId={roomState.host}
+					/>
 				)}
 			</div>
 		</div>
