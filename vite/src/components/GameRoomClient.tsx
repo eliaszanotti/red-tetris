@@ -1,56 +1,119 @@
 import { useParams } from 'react-router-dom';
-import { useGameSocket } from '../hooks/useGameSocket';
-import { GameBoard } from './GameBoard';
-import { OpponentsPanel } from './OpponentsPanel';
+import { useEffect, useState } from 'react';
+import { io, Socket } from 'socket.io-client';
+
+type Player = {
+	id: string;
+	name: string;
+	board: number[][];
+	currentPiece: unknown;
+	isAlive: boolean;
+	spectrum: { heights: number[] };
+};
+
+type RoomState = {
+	id: string;
+	host: string;
+	isPlaying: boolean;
+	players: Player[];
+};
 
 export const GameRoomClient = () => {
-    const { room, playerName } = useParams<{ room: string; playerName: string }>();
+	const { room, playerName } = useParams<{ room: string; playerName: string }>();
 
-    const gameState = useGameSocket(room ?? '', playerName ?? '');
+	const [isConnected, setIsConnected] = useState(false);
+	const [roomState, setRoomState] = useState<RoomState | null>(null);
 
-    if (!room || !playerName) {
-        return <div>Invalid URL. Use: /:room/:playerName</div>;
-    }
+	useEffect(() => {
+		if (!room || !playerName) return;
 
-    const isHost = gameState.players.find(p => p.name === playerName)?.isHost ?? false;
+		const socket: Socket = io('http://localhost:3000');
 
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh', backgroundColor: '#1a1a2e', color: 'white', padding: '20px' }}>
-            <h1 style={{ margin: '0 0 20px 0' }}>Red Tetris</h1>
-            <p style={{ margin: '0 0 20px 0' }}>Room: {room} | Player: {playerName}</p>
+		socket.on('connect', () => {
+			setIsConnected(true);
+			socket.emit('join_game', { room, playerName });
+		});
 
-            {!gameState.isPlaying && isHost && (
-                <button
-                    onClick={() => gameState.startGame()}
-                    style={{
-                        padding: '10px 20px',
-                        fontSize: '16px',
-                        backgroundColor: '#e94560',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: '5px',
-                        cursor: 'pointer',
-                        marginBottom: '20px'
-                    }}
-                >
-                    Start Game
-                </button>
-            )}
+		socket.on('game_state', (state: RoomState) => {
+			setRoomState(state);
+		});
 
-            {!gameState.isPlaying && !isHost && (
-                <p style={{ marginBottom: '20px' }}>Waiting for host to start...</p>
-            )}
+		socket.on('player_joined', (player: Player) => {
+			setRoomState((prev) =>
+				prev
+					? { ...prev, players: [...prev.players, player] }
+					: null,
+			);
+		});
 
-            <div style={{ display: 'flex', gap: '20px' }}>
-                <GameBoard board={gameState.board} currentPiece={gameState.currentPiece} />
-                <OpponentsPanel players={gameState.players} currentName={playerName} />
-            </div>
+		return () => {
+			socket.disconnect();
+		};
+	}, [room, playerName]);
 
-            {gameState.winner && (
-                <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: '#0f3460', padding: '40px', borderRadius: '10px', textAlign: 'center' }}>
-                    <h2>{gameState.winner === playerName ? 'You Win!' : `${gameState.winner} Wins!`}</h2>
-                </div>
-            )}
-        </div>
-    );
+	if (!room || !playerName) {
+		return (
+			<div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
+				<p className="text-red-400">Invalid URL. Use: /:room/:playerName</p>
+			</div>
+		);
+	}
+
+	if (!isConnected) {
+		return (
+			<div className="flex items-center justify-center min-h-screen bg-gray-900">
+				<div className="flex flex-col items-center gap-4">
+					<div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
+					<p className="text-white text-lg">Connecting to server...</p>
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className="flex min-h-screen bg-gray-900 text-white">
+			{/* Main area */}
+			<div className="flex-1 flex items-center justify-center">
+				<div className="text-center">
+					<h1 className="text-4xl font-bold mb-4">Red Tetris</h1>
+					<p className="text-gray-400 mb-2">Room: {room}</p>
+					<p className="text-gray-400">Player: {playerName}</p>
+					{roomState?.isPlaying ? (
+						<p className="text-green-400 mt-4">Game in progress...</p>
+					) : (
+						<p className="text-yellow-400 mt-4">Waiting for host to start...</p>
+					)}
+				</div>
+			</div>
+
+			{/* Players sidebar */}
+			<div className="w-64 bg-gray-800 border-l border-gray-700 p-4">
+				<h2 className="text-xl font-semibold mb-4">Players</h2>
+				{roomState?.players.length === 0 ? (
+					<p className="text-gray-500">No players yet...</p>
+				) : (
+					<ul className="space-y-2">
+						{roomState?.players.map((player) => (
+							<li
+								key={player.id}
+								className={`p-3 rounded-lg ${
+									player.name === playerName
+										? 'bg-red-600'
+										: 'bg-gray-700'
+								} flex items-center gap-3`}
+							>
+								<div className="w-3 h-3 rounded-full bg-green-400" />
+								<span className="font-medium">{player.name}</span>
+								{player.id === roomState?.host && (
+									<span className="text-xs bg-yellow-500 text-black px-2 py-0.5 rounded">
+										HOST
+									</span>
+								)}
+							</li>
+						))}
+					</ul>
+				)}
+			</div>
+		</div>
+	);
 };

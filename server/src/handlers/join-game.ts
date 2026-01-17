@@ -29,6 +29,17 @@ export const handleJoinGame = (
 		roomState.host = socket.id;
 	}
 
+	// Ajouter le joueur au state
+	roomState.players.set(socket.id, {
+		id: socket.id,
+		name: playerName,
+		socket,
+		board: Array(20).fill(null).map(() => Array(10).fill(0)),
+		currentPiece: null,
+		isAlive: true,
+		spectrum: { heights: Array(10).fill(0) },
+	});
+
 	// Rejoindre la room socket
 	socket.join(room);
 
@@ -51,5 +62,15 @@ export const handleJoinGame = (
 	});
 
 	// Log le state complet
-	console.log("[join-game] Server state:", JSON.stringify(state, null, 2));
+	console.log("[join-game] Server state:", {
+		roomId: roomState.id,
+		host: roomState.host,
+		isPlaying: roomState.isPlaying,
+		playersCount: roomState.players.size,
+		players: Array.from(roomState.players.values()).map((p) => ({
+			id: p.id,
+			name: p.name,
+			isAlive: p.isAlive,
+		})),
+	});
 };

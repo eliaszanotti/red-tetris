@@ -9,6 +9,7 @@
         "start": "node dist/server.js"
     },
     "dependencies": {
+        "red-tetris-types": "workspace:*",
         "socket.io": "^4.8.1",
         "express": "^4.21.2"
     },
