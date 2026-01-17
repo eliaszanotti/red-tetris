@@ -1,5 +1,5 @@
-import type { Socket } from 'socket.io';
-import type { Room } from '../types/state.js';
+import type { Socket } from "socket.io";
+import type { ServerState } from "red-tetris-types/state";
 
 interface PlayerInputParams {
 	room: string;
@@ -8,8 +8,8 @@ interface PlayerInputParams {
 
 export const handlePlayerInput = (
 	socket: Socket,
-	state: Map<string, Room>,
+	state: ServerState,
 	params: PlayerInputParams,
 ) => {
-	console.log('[player-input] Received:', { socketId: socket.id, ...params });
+	console.log("[player-input] Received:", { socketId: socket.id, ...params });
 };

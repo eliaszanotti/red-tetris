@@ -1,9 +1,9 @@
-import type { Socket } from 'socket.io';
-import type { Room } from '../types/state.js';
+import type { Socket } from "socket.io";
+import type { ServerState } from "red-tetris-types/state";
 
 export const handleDisconnect = (
 	socket: Socket,
-	state: Map<string, Room>,
+	state: ServerState,
 ) => {
-	console.log('[disconnect] Received:', { socketId: socket.id });
+	console.log("[disconnect] Received:", { socketId: socket.id });
 };

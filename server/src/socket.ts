@@ -1,14 +1,15 @@
 import type { Server, Socket } from "socket.io";
-import { createServerState } from "./types/state.js";
-import { handleJoinGame } from "./handlers/join-game.js";
-import { handleStartGame } from "./handlers/start-game.js";
-import { handlePlayerInput } from "./handlers/player-input.js";
-import { handleDisconnect } from "./handlers/disconnect.js";
+import type { ServerState } from "red-tetris-types/state";
+import { handleJoinGame } from "./handlers/join-game";
+import { handleStartGame } from "./handlers/start-game";
+import { handlePlayerInput } from "./handlers/player-input";
+import { handleDisconnect } from "./handlers/disconnect";
 
 export function setupSocketIO(io: Server): void {
-	const state = createServerState();
+	const state: ServerState = new Map();
 	io.on("connection", (socket: Socket) => {
-		console.log("[connection] Client connected:", socket.id);
+		console.log("state", state);
+		// console.log("[connection] Client connected:", socket.id);
 
 		socket.on(
 			"join_game",
