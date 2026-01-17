@@ -1,5 +1,5 @@
 import type { Socket } from 'socket.io';
-import type { ServerStateClass } from '../types/state.js';
+import type { Room } from '../types/state.js';
 
 interface PlayerInputParams {
 	room: string;
@@ -8,7 +8,7 @@ interface PlayerInputParams {
 
 export const handlePlayerInput = (
 	socket: Socket,
-	state: ServerStateClass,
+	state: Map<string, Room>,
 	params: PlayerInputParams,
 ) => {
 	console.log('[player-input] Received:', { socketId: socket.id, ...params });

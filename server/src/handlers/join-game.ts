@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io";
-import type { ServerStateClass } from "../types/state.js";
-import type { Player } from "../Player.js";
+import { getOrCreateRoom } from "../types/state.js";
+import type { Room } from "../types/state.js";
 
 interface JoinGameParams {
 	room: string;
@@ -9,7 +9,7 @@ interface JoinGameParams {
 
 export const handleJoinGame = (
 	socket: Socket,
-	state: ServerStateClass,
+	state: Map<string, Room>,
 	params: JoinGameParams,
 	io: any,
 ) => {
@@ -21,11 +21,11 @@ export const handleJoinGame = (
 		playerName,
 	});
 
-	// Récupérer ou créer la room
-	const roomState = state.getOrCreateRoom(room);
+	// Créer la room
+	const roomState = getOrCreateRoom(state, room);
 
 	// Premier joueur = host
-	if (roomState.players.size === 1) {
+	if (roomState.host === "") {
 		roomState.host = socket.id;
 	}
 

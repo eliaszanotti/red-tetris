@@ -1,12 +1,12 @@
 import type { Server, Socket } from "socket.io";
-import { ServerStateClass } from "./types/state.js";
+import { createServerState } from "./types/state.js";
 import { handleJoinGame } from "./handlers/join-game.js";
 import { handleStartGame } from "./handlers/start-game.js";
 import { handlePlayerInput } from "./handlers/player-input.js";
 import { handleDisconnect } from "./handlers/disconnect.js";
 
 export function setupSocketIO(io: Server): void {
-	const state = new ServerStateClass();
+	const state = createServerState();
 	io.on("connection", (socket: Socket) => {
 		console.log("[connection] Client connected:", socket.id);
 

@@ -1,0 +1,15 @@
+{
+	"name": "red-tetris-types",
+	"version": "1.0.0",
+	"type": "module",
+	"exports": {
+		"./state": "./state.ts"
+	},
+	"devDependencies": {
+		"@types/node": "^20.17.11",
+		"typescript": "^5.7.2"
+	},
+	"dependencies": {
+		"socket.io": "^4.8.1"
+	}
+}
