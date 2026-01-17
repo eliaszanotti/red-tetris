@@ -1,5 +1,5 @@
 import type { Socket } from "socket.io";
-import type { Piece } from "../server/src/Piece.js";
+import { Piece } from "./piece";
 
 export interface PlayerInRoom {
 	id: string;
@@ -20,20 +20,3 @@ export interface Room {
 }
 
 export type ServerState = Map<string, Room>;
-
-// Client types (sans Socket)
-export interface Player {
-	id: string;
-	name: string;
-	board: number[][];
-	currentPiece: unknown;
-	isAlive: boolean;
-	spectrum: { heights: number[] };
-}
-
-export interface RoomState {
-	id: string;
-	host: string;
-	isPlaying: boolean;
-	players: Player[];
-}
