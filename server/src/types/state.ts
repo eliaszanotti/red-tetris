@@ -1,99 +1,65 @@
-import type { Socket } from 'socket.io';
-import type { Piece } from '../Piece.js';
+import type { Socket } from "socket.io";
+import type { Piece } from "../Piece.js";
 
-// ============== SESSION ==============
-/**
- * Une session représente un joueur connecté avec son socket
- * Une session peut rejoindre une game
- */
-export interface Session {
-	id: string;           // socket.id
-	playerName: string;
-	socket: Socket;
-	joinedAt: Date;
-}
-
-// ============== GAME ==============
-export interface Spectrum {
-	heights: number[];
-}
-
-export interface PlayerInGame {
+// ============== PLAYER IN ROOM ==============
+export interface PlayerInRoom {
 	id: string;
 	name: string;
-	spectrum: Spectrum;
-	isAlive: boolean;
+	socket: Socket;
 	board: number[][];
 	currentPiece: Piece | null;
+	isAlive: boolean;
+	spectrum: { heights: number[] };
 }
 
-export interface Game {
-	id: string;                    // room name
-	host: string;                  // socket.id du host
+// ============== ROOM ==============
+export interface Room {
+	id: string;
+	host: string;
 	isPlaying: boolean;
-	players: Map<string, PlayerInGame>;
-	pieceSequence: string[];
-	currentPieceIndex: number;
+	players: Map<string, PlayerInRoom>;
 	createdAt: Date;
 }
 
 // ============== SERVER STATE ==============
 /**
  * État global du serveur
- * Contient toutes les sessions et toutes les games
+ * Contient toutes les rooms
  */
 export interface ServerState {
-	sessions: Map<string, Session>;    // socket.id -> Session
-	games: Map<string, Game>;          // room -> Game
+	rooms: Map<string, Room>;
 }
 
 export class ServerStateClass {
-	sessions: Map<string, Session> = new Map();
-	games: Map<string, Game> = new Map();
+	rooms: Map<string, Room> = new Map();
 
 	constructor() {
-		this.sessions = new Map();
-		this.games = new Map();
+		this.rooms = new Map();
 	}
 
-	// Sessions
-	addSession(session: Session): void {
-		this.sessions.set(session.id, session);
+	// Rooms
+	addRoom(room: Room): void {
+		this.rooms.set(room.id, room);
 	}
 
-	removeSession(sessionId: string): void {
-		this.sessions.delete(sessionId);
+	removeRoom(roomId: string): void {
+		this.rooms.delete(roomId);
 	}
 
-	getSession(sessionId: string): Session | undefined {
-		return this.sessions.get(sessionId);
+	getRoom(roomId: string): Room | undefined {
+		return this.rooms.get(roomId);
 	}
 
-	// Games
-	addGame(game: Game): void {
-		this.games.set(game.id, game);
-	}
-
-	removeGame(room: string): void {
-		this.games.delete(room);
-	}
-
-	getGame(room: string): Game | undefined {
-		return this.games.get(room);
-	}
-
-	getOrCreateGame(room: string): Game {
-		if (!this.games.has(room)) {
-			this.games.set(room, {
-				id: room,
-				host: '',
+	getOrCreateRoom(roomId: string): Room {
+		if (!this.rooms.has(roomId)) {
+			this.rooms.set(roomId, {
+				id: roomId,
+				host: "",
 				isPlaying: false,
 				players: new Map(),
-				pieceSequence: [],
-				currentPieceIndex: 0,
 				createdAt: new Date(),
 			});
 		}
-		return this.games.get(room)!;
+		return this.rooms.get(roomId)!;
 	}
 }
