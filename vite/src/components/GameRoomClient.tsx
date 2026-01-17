@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { PlayerList } from "./PlayerList";
+import { InvalidUrl } from "./InvalidUrl";
+import { Connecting } from "./Connecting";
 
 type Player = {
 	id: string;
@@ -54,26 +56,11 @@ export const GameRoomClient = () => {
 	}, [room, playerName]);
 
 	if (!room || !playerName) {
-		return (
-			<div className="flex items-center justify-center min-h-screen bg-gray-900 text-white">
-				<p className="text-red-400">
-					Invalid URL. Use: /:room/:playerName
-				</p>
-			</div>
-		);
+		return <InvalidUrl room={room ?? ""} playerName={playerName ?? ""} />;
 	}
 
 	if (!isConnected) {
-		return (
-			<div className="flex items-center justify-center min-h-screen bg-gray-900">
-				<div className="flex flex-col items-center gap-4">
-					<div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
-					<p className="text-white text-lg">
-						Connecting to server...
-					</p>
-				</div>
-			</div>
-		);
+		return <Connecting />;
 	}
 
 	return (
