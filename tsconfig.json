@@ -8,10 +8,9 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./*"],
-			"@server/*": ["./server/*"],
-			"@types/*": ["./types/*"],
-			"@vite/*": ["./vite/*"]
+			"@/types/*": ["./types/*"],
+			"@/server/*": ["./server/src/*"],
+			"@/vite/*": ["./vite/src/*"]
 		}
 	}
 }

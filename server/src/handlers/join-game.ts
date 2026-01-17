@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io";
-import { getOrCreateRoom } from "../lib/get-or-create-room";
-import type { ServerState } from "red-tetris-types/state";
+import { getOrCreateRoom } from "@/server/lib/get-or-create-room";
+import type { ServerState } from "@/types/state";
 
 interface JoinGameParams {
 	room: string;
